@@ -1,4 +1,8 @@
 import React, { Component } from "react"
+import axios from "axios"
+
+import Home from "../pages/home"
+
 
 export default class Login extends Component {
     constructor(props) {
@@ -6,22 +10,49 @@ export default class Login extends Component {
 
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            errorColor: 'white'
         }
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleFail = this.handleChange.bind(this)
 
     }
 
-    handleSubmit(event) {
-        console.log("Handle submit", event)
-    }
 
     handleChange(event) {
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: event.target.value,
+            errorColor: 'white'
         })
+    }
+
+    handleFail() {
+        this.setState({
+            errorColor: 'red'
+        })
+    }
+
+    handleSubmit(event) {
+        event.preventDefault()
+        axios
+            .get("https://tbh-blog-server.herokuapp.com/admins",
+            ).then(response => {
+                console.log("response data", response.data)
+                let signInArray = response.data
+                signInArray.forEach(item => {
+                    if (this.state.email === item.username) {
+                        if (this.state.password === item.password) {
+                            return { Home }
+                        }
+                    }
+                })
+
+            }
+
+            )
+
     }
 
 
@@ -47,6 +78,7 @@ export default class Login extends Component {
                     />
                     <div>
                         <button type="submit"> Login </button>
+
                     </div>
                 </form>
             </div>

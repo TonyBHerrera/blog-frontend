@@ -12,10 +12,22 @@ import Navigation from "./navigation/navigation"
 
 import About from "./pages/about"
 import Home from "./pages/home"
+import NewBlog from './pages/new-blog';
 
 
 
 export default class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loggedInStatus: "NOT_LOGGED_IN"
+    }
+
+  }
+  handleSuccessfulLogin() {
+
+  }
 
   render() {
     return (
@@ -27,7 +39,8 @@ export default class App extends Component {
               <Route exact path="/" component={Home} />
               <Route path="/auth" component={Auth} />
               <Route path="/about" component={About} />
-              <Route path="/Blog" component={Blog} />
+              <Route path="/blog" component={Blog} />
+              <Route path="/new-blog" component={NewBlog} />
 
 
             </Switch>

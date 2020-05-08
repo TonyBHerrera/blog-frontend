@@ -24,6 +24,11 @@ export default function Navigation() {
                         Blog
                     </NavLink>
                 </div>
+                <div className="nav-link-wrapper">
+                    <NavLink to="/new-blog">
+                        New Blog
+                    </NavLink>
+                </div>
             </div>
             <div className="left-side">
                 <img src={Smiley} />

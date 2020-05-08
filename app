@@ -9,13 +9,20 @@ import Blog from "./pages/blog"
 import BlogDetail from "./blog-comps/blog-detail.js"
 import Auth from "./pages/auth"
 import Navigation from "./navigation/navigation"
-
+import Navbar from "./navigation/navBar"
 import About from "./pages/about"
 import Home from "./pages/home"
-
+import GlobalStyle from '..style/GlobalStyle'
 
 
 export default class App extends Component {
+  state = {
+    navbarOpen: false
+  }
+
+  handleNavbar = () => {
+    this.setState({ navbarOpen: !this.state.navbarOpen})
+  }
 
   render() {
     return (

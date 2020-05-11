@@ -23,10 +23,20 @@ export default class App extends Component {
     this.state = {
       loggedInStatus: "NOT_LOGGED_IN"
     }
+    this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this)
+    this.handleUnSuccessfulLogin = this.handleUnSuccessfulLogin.bind(this)
 
   }
   handleSuccessfulLogin() {
+    this.setState = ({
+      loggedInStatus: "LOGGED_IN"
+    })
+  }
 
+  handleUnSuccessfulLogin() {
+    this.setState = ({
+      loggedInStatus: "NOT_LOGGED_IN"
+    })
   }
 
   render() {
@@ -37,7 +47,19 @@ export default class App extends Component {
             <Navigation />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/auth" component={Auth} />
+
+              <Route
+                path="/auth"
+                render={props => (
+                  <Auth
+                    {...props}
+                    handleSuccessfulLogin={this.handleSuccessfulLogin}
+                    handleUnSuccessfulLogin={this.handleUnSuccessfulLogin}
+                  />
+                )
+                }
+              />
+
               <Route path="/about" component={About} />
               <Route path="/blog" component={Blog} />
               <Route path="/new-blog" component={NewBlog} />

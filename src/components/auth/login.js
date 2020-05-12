@@ -44,15 +44,16 @@ export default class Login extends Component {
                 signInArray.forEach(item => {
                     if (this.state.email === item.username) {
                         if (this.state.password === item.password) {
-                            return { Home }
+                            this.props.handleSuccessfulAuth()
+                        } else {
+                            console.log('failed')
                         }
                     }
                 })
 
-            }
-
-            )
-
+            }).catch(error => {
+                console.log("something went wrong", error)
+            })
     }
 
 

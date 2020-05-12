@@ -6,14 +6,16 @@ export default function NewBlog() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [image_url, setImage_url] = useState("")
+    const [editId, setEditId] = useState("")
     const [editMode, setEditMode] = useState(false)
 
     const handleEditClick = (blog) => {
         setTitle(blog.title)
         setContent(blog.content)
         setImage_url(blog.image_url)
+        setEditId(blog.id)
+        setEditMode(true)
     }
-
 
 
     useEffect(() => {
@@ -26,33 +28,42 @@ export default function NewBlog() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (editMode) {
-            displayCancelButton()
+            // displayCancelButton()
             axios
-                .patch(`https://"https://tbh-blog-server.herokuapp.com/blog/${editId}`, {
+                .patch(`https://tbh-blog-server.herokuapp.com/blog/${editId}`, {
                     title,
                     content,
                     image_url
                 })
                 .then((response) => {
                     console.log("Blog post Added", response)
+                    getBlogs()
+                    mappedBlogs()
                 })
-
+                .then(() => {
+                    setTitle(""),
+                        setContent("")
+                    setImage_url("")
+                    setEditId("")
+                    setEditMode(false)
+                })
+                .catch((error) => {
+                    console.log("Error with the Patch", error)
+                })
+        } else {
+            axios
+                .post("https://tbh-blog-server.herokuapp.com/add-blog", {
+                    title,
+                    content,
+                    image_url
+                })
+                .then(() => {
+                    setTitle("")
+                    setContent("")
+                    setImage_url("")
+                })
+                .catch((error) => console.log("form submit error: ", error))
         }
-
-
-        axios
-            .post("https://tbh-blog-server.herokuapp.com/add-blog", {
-                title,
-                content,
-                image_url
-            })
-            .then(() => {
-                setTitle("")
-                setContent("")
-                setImage_url("")
-            })
-            .catch((error) => console.log("form submit error: ", error))
-
     }
 
     const getBlogs = () => {
@@ -60,8 +71,15 @@ export default function NewBlog() {
             .get("https://tbh-blog-server.herokuapp.com/blogs")
             .then(response => {
                 setBlogs([...response.data])
+                mappedBlogs()
             })
             .catch(error => console.log("getBlogs error ", error))
+    }
+    const deleteBlog = (id) => {
+        axios
+            .delete(`https://tbh-blog-server.herokuapp.com/blog/${id}`)
+            .then(setBlogs(blog.filter(blog => blog.id !== id)))
+            .catch(err => console.log("Delete Blog error", err))
     }
 
     const mappedBlogs = () => {
@@ -72,6 +90,7 @@ export default function NewBlog() {
                         <h1>{blog.title}</h1>
                         <p>{blog.content}</p>
                         <button onClick={() => handleEditClick(blog)}>Edit Blog</button>
+                        <button onClick={() => deleteBlog(blog.id)}>Delete Blog</button>
                     </div>
                     // <div>
                     //    

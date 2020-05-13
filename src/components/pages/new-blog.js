@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import axios from "axios"
-// import DropzoneComponent from "react-dropzone-component"
+import DropzoneComponent from "react-dropzone-component"
+import request from "superagent";
+
+import "../../../node_modules/react-dropzone-component/styles/filepicker.css";
+import "../../../node_modules/dropzone/dist/min/dropzone.min.css";
+
 export default function NewBlog() {
     const [blog, setBlogs] = useState([])
     const [title, setTitle] = useState("")
@@ -8,6 +13,7 @@ export default function NewBlog() {
     const [image_url, setImage_url] = useState("")
     const [editId, setEditId] = useState("")
     const [editMode, setEditMode] = useState(false)
+    const imageRef = useRef(null)
 
     const handleEditClick = (blog) => {
         setTitle(blog.title)
@@ -18,9 +24,52 @@ export default function NewBlog() {
     }
 
 
+
+
     useEffect(() => {
         getBlogs()
     }, [])
+
+    const componentConfig = () => {
+        return {
+            iconFiletypes: [".jpg", ".png"],
+            showFiletypeIcon: true,
+            postUrl: "https://httpbin.org/post"
+        }
+    }
+
+    const djsConfig = () => {
+        return {
+            addRemoveLinks: true,
+            maxFiles: 1
+        }
+    }
+
+    // const handleDrop = () => {
+    //     return {
+
+    //         addedfile: file => setImage_url(file)
+    //     }
+    // }
+
+    const handleDrop = () => {
+        return {
+            addedfile: (file) => {
+                let upload = request
+                    .post("	https://api.cloudinary.com/v1_1/tonecloud/image/upload")
+                    .field("upload_preset", "blog-images")
+                    .field("file", file);
+                upload.end((err, res) => {
+                    if (err) {
+                        console.log("Cloudinary error: ", err);
+                    }
+                    if (res.body.secure_url !== "") {
+                        setImage_url(res.body.secure_url);
+                    }
+                });
+            },
+        };
+    };
 
 
 
@@ -46,6 +95,7 @@ export default function NewBlog() {
                     setImage_url("")
                     setEditId("")
                     setEditMode(false)
+                    imageRef.current.dropzone.removeAllFiles()
                 })
                 .catch((error) => {
                     console.log("Error with the Patch", error)
@@ -61,6 +111,7 @@ export default function NewBlog() {
                     setTitle("")
                     setContent("")
                     setImage_url("")
+                    imageRef.current.dropzone.removeAllFiles()
                 })
                 .catch((error) => console.log("form submit error: ", error))
         }
@@ -104,28 +155,26 @@ export default function NewBlog() {
 
     return (
         <div>
-            <div>
-
-                <form onSubmit={handleSubmit} className="new-blog-wrappper">
-                    <div>
-                        <input
-                            type="title"
-                            name="title"
-                            placeholder="Blog Title"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <textarea
-                            type="text"
-                            name="Content"
-                            placeholder="Blog Content"
-                            value={content}
-                            onChange={e => setContent(e.target.value)}
-                        />
-                    </div>
-                    <div>
+            <form onSubmit={handleSubmit} className="new-blog-wrappper">
+                <div className="one column">
+                    <input
+                        type="title"
+                        name="title"
+                        placeholder="Blog Title"
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                    />
+                </div>
+                <div className="one-column">
+                    <textarea
+                        type="text"
+                        name="Content"
+                        placeholder="Blog Content"
+                        value={content}
+                        onChange={e => setContent(e.target.value)}
+                    />
+                </div>
+                {/* <div>
                         <input
                             type="text"
                             name="image_url"
@@ -133,16 +182,25 @@ export default function NewBlog() {
                             value={image_url}
                             onChange={e => setImage_url(e.target.value)}
                         />
-                    </div>
-                    <div>
-                        <button type="submit"> Create New Blog </button>
-                    </div>
-                </form>
-                <div>
-                    {mappedBlogs()}
+                    </div> */}
+                <div className="image-uploaders one-column">
+                    <DropzoneComponent
+                        ref={imageRef}
+                        config={componentConfig()}
+                        djsConfig={djsConfig}
+                        eventHandlers={handleDrop()}
+                    >
+
+                    </DropzoneComponent>
                 </div>
+                <div>
+                    <button type="submit"> Create New Blog </button>
+                </div>
+            </form>
+            <div>
+                {mappedBlogs()}
             </div>
         </div>
-
     )
+
 }

@@ -27,7 +27,7 @@ export default function App(props) {
 
   const authorizedPages = () => {
     return [
-      <Route path="/new-blog" component={NewBlog} />
+      <Route key="new-blog-form" path="/new-blog" component={NewBlog} />
     ]
   }
 
@@ -56,6 +56,7 @@ export default function App(props) {
             />
             <Route path="/about" component={About} />
             <Route path="/blog" component={Blog} />
+            <Route path="/b/:slug" component={BlogDetail} />
             {loggedInStatus === "LOGGED_IN" ? authorizedPages() : null}
 
           </Switch>

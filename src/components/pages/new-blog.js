@@ -28,7 +28,7 @@ export default function NewBlog() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (editMode) {
-            // displayCancelButton()
+
             axios
                 .patch(`https://tbh-blog-server.herokuapp.com/blog/${editId}`, {
                     title,
@@ -105,37 +105,42 @@ export default function NewBlog() {
     return (
         <div>
             <div>
+
+                <form onSubmit={handleSubmit} className="new-blog-wrappper">
+                    <div>
+                        <input
+                            type="title"
+                            name="title"
+                            placeholder="Blog Title"
+                            value={title}
+                            onChange={e => setTitle(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <textarea
+                            type="text"
+                            name="Content"
+                            placeholder="Blog Content"
+                            value={content}
+                            onChange={e => setContent(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            name="image_url"
+                            placeholder="image_url"
+                            value={image_url}
+                            onChange={e => setImage_url(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <button type="submit"> Create New Blog </button>
+                    </div>
+                </form>
                 <div>
                     {mappedBlogs()}
                 </div>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="title"
-                        name="title"
-                        placeholder="Blog Title"
-                        value={title}
-                        onChange={e => setTitle(e.target.value)}
-                    />
-
-                    <input
-                        type="text"
-                        name="Content"
-                        placeholder="Blog Content"
-                        value={content}
-                        onChange={e => setContent(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        name="image_url"
-                        placeholder="image_url"
-                        value={image_url}
-                        onChange={e => setImage_url(e.target.value)}
-                    />
-                    <div>
-                        <button type="submit"> Create New Blog </button>
-
-                    </div>
-                </form>
             </div>
         </div>
 

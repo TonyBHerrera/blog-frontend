@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import axios from "axios"
 import BlogItem from "../blog-comps/blog-item"
+import BlogDetail from "../blog-comps/blog-detail"
 
 export default class Blog extends Component {
     constructor() {
@@ -32,12 +33,16 @@ export default class Blog extends Component {
 
     render() {
         const blogRecords = this.state.blogItems.map(blogItem => {
-            return <BlogItem blogItem={blogItem} />
+            return <BlogItem key={blogItem.id} blogItem={blogItem} />
         })
+
         return (
-            <div>
-                {blogRecords}
+            <div className="blog-container">
+                <div className="content-container">
+                    {blogRecords}
+                </div>
             </div>
         )
+
     }
 }

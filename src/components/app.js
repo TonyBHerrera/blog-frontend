@@ -11,10 +11,15 @@ import Navigation from "./navigation/navigation"
 import About from "./pages/about"
 import Home from "./pages/home"
 import NewBlog from './pages/new-blog';
+// import SocialMedia from './pages/social-media';
 import CopyWrite from './pages/copywrite'
+// import { library } from "@fortawesome/fontawesome-svg-core";
+// import { FortAwesomeIcon, FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTwitter, faInstagram, faFacebookF } from "@fortawesome/free-solid-svg-icons";
+
 
 import axios from 'axios';
-
+// library.add(faTwitter, faInstagram, faFacebookF)
 
 
 export default function App(props) {
@@ -66,6 +71,7 @@ export default function App(props) {
           </Switch>
         </div>
       </Router>
+
       <CopyWrite />
     </div>
   );

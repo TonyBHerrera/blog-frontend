@@ -11,7 +11,12 @@ import Navigation from "./navigation/navigation"
 import About from "./pages/about"
 import Home from "./pages/home"
 import NewBlog from './pages/new-blog';
+import CopyWrite from './pages/copywrite'
+
 import axios from 'axios';
+
+
+
 export default function App(props) {
   const [loggedInStatus, setLoggedInStatus] = useState("NOT_LOGGED_IN")
 
@@ -40,9 +45,8 @@ export default function App(props) {
       <Router>
         <div>
           <Navigation loggedInStatus={loggedInStatus} />
-          <h2>{loggedInStatus}</h2>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={Blog} />
             <Route
               path="/auth"
               render={props => (
@@ -62,6 +66,7 @@ export default function App(props) {
           </Switch>
         </div>
       </Router>
+      <CopyWrite />
     </div>
   );
 }

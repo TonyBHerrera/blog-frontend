@@ -197,8 +197,11 @@ export default function NewBlog() {
                     <button type="submit"> Create New Blog </button>
                 </div>
             </form>
-            <div>
-                {mappedBlogs()}
+            <div className="blog-container">
+                <div className="content-container">
+                    <h1>EDIT BLOGS </h1>
+                    {mappedBlogs()}
+                </div>
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import axios from "axios"
 import BlogItem from "../blog-comps/blog-item"
+import Carousel from "./Carousel"
 import BlogDetail from "../blog-comps/blog-detail"
 
 export default class Blog extends Component {
@@ -39,6 +40,7 @@ export default class Blog extends Component {
         return (
             <div className="blog-container">
                 <div className="content-container">
+                    <Carousel />
                     {blogRecords}
                 </div>
             </div>
